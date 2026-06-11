@@ -36,7 +36,7 @@ app.post("/webhook", async (req, res) => {
     if (text === "/สรุป") {
       const history = messageHistory[sourceId].slice(-50).join("\n");
       const response = await anthropic.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-5",
         max_tokens: 1000,
         messages: [{
           role: "user",
