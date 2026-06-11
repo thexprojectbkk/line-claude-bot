@@ -9,11 +9,20 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 // เก็บประวัติข้อความแต่ละกลุ่ม
 const messageHistory = {};
 
+// Health check สำหรับ UptimeRobot
+app.get("/", (req, res) => res.send("OK"));
+
 app.post("/webhook", async (req, res) => {
   res.sendStatus(200); // ตอบ LINE ทันที
 
   const events = req.body.events;
   for (const event of events) {
+    // ตอบรับคำเชิญเข้ากลุ่มอัตโนมัติ
+    if (event.type === "join") {
+      await replyLine(event.replyToken, "สวัสดีครับ! พิม /สรุป เมื่อต้องการให้ผมสรุปการสนทนา 😊");
+      continue;
+    }
+
     if (event.type !== "message" || event.message.type !== "text") continue;
 
     const text = event.message.text;
